@@ -1,32 +1,29 @@
 package com.baul.banking_backend.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int custId;
-    @Column(unique = true)
+    private Integer custId;
     private String custName;
-    private int custAge;
-    private String custEmail;
+    private Integer custAge;
     @Column(unique = true)
+    private String custEmail;
     private String password;
-    private boolean isActive;
+    private Boolean active;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "accountdetails")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "customer")
     private AccountDetails accountDetails;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "carddetails")
-    private CardDetails cardDetails;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "carddetails")
-    private DepositDetails depositDetails;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "customer")
+    private List<DepositDetails> depositDetails;
 }

@@ -1,29 +1,39 @@
 package com.baul.banking_backend.models;
 
+import com.baul.banking_backend.enums.Enums.DepositType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class DepositDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int depositId;
-    private String depositType;
-    private int depositValue;
+    private Integer depositId;
+
+    @Enumerated(EnumType.STRING)
+    private DepositType depositType;
+
+    private BigDecimal depositValue;
+
+    private Float interest;
+
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime issueDate;
+
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @Column(nullable = true)
     private LocalDateTime maturityDate;
-    private Boolean isActive;
+
+    private Boolean active;
 
     @ManyToOne
     private Customer customer;
