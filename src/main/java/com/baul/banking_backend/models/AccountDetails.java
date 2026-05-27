@@ -2,11 +2,14 @@ package com.baul.banking_backend.models;
 
 import com.baul.banking_backend.enums.Enums.AccountType;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,19 +23,21 @@ public class AccountDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer accountId;
 
-    private BigDecimal accountBalance;
+    private BigDecimal accountBalance = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    private Boolean isActive;
+    @Column(nullable = false)
+    private Boolean active;
 
     @ManyToOne
     private Customer customer;
 
-    @OneToMany(mappedBy = "accountDetails", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<CardDetails> card;
+    @OneToMany(mappedBy = "accountDetails", cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+    fetch = FetchType.LAZY)
+    private List<CardDetails> cards = new ArrayList<>();
 }
