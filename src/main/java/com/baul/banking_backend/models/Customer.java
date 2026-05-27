@@ -22,7 +22,7 @@ public class Customer {
     private Boolean active;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "customer")
-    private AccountDetails accountDetails;
+    private List<AccountDetails> accountDetails;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "customer")
     private List<DepositDetails> depositDetails;

@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,5 +34,5 @@ public class AccountDetails {
     private Customer customer;
 
     @OneToMany(mappedBy = "accountDetails", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private CardDetails card;
+    private List<CardDetails> card;
 }
