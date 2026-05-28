@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -24,18 +24,18 @@ public class DepositDetails {
 
     private BigDecimal depositValue;
 
-    private Float interest;
+    private BigDecimal interest;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime issueDate;
+    private int tenureMonths;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    @Column(nullable = true)
-    private LocalDateTime maturityDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate issueDate;
 
-    private Boolean active;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate maturityDate;
 
     @ManyToOne
+    @JoinColumn(name = "cust_id")
     private Customer customer;
 
 }

@@ -21,9 +21,12 @@ public class Customer {
     private String password;
     private Boolean active;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "customer")
+    @OneToMany(mappedBy = "customer")
     private List<AccountDetails> accountDetails;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "customer")
+    @OneToMany(mappedBy = "customer")
     private List<DepositDetails> depositDetails;
+
+    @OneToMany(mappedBy = "customer")
+    private List<CardDetails> cardDetails;
 }

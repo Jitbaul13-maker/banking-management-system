@@ -32,5 +32,5 @@ public class CardDetails {
     private Boolean active;
 
     @ManyToOne
-    private AccountDetails accountDetails;
+    private Customer customer;
 }
