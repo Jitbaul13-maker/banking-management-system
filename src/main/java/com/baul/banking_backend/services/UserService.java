@@ -4,6 +4,7 @@ import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.repos.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public class UserService {
     @Autowired
     private CustomerRepo repo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<Customer> getAllCustomer() {
         return repo.findAll();
     }
@@ -23,6 +27,7 @@ public class UserService {
     }
 
     public void registerCustomer(Customer customer) {
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         repo.save(customer);
     }
 
