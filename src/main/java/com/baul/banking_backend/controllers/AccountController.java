@@ -50,4 +50,11 @@ public class AccountController {
         return ResponseEntity.ok("Account deactivated successfully");
     }
 
+    @DeleteMapping("/accounts/{accountId}")
+    public ResponseEntity<?> deleteAccount(@PathVariable("custId") int custId,
+                                           @PathVariable("accountId") int accountId){
+        service.deleteAccount(custId, accountId);
+        return ResponseEntity.ok("Account deleted successfully");
+    }
+
 }

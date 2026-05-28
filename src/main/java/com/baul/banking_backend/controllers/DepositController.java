@@ -24,13 +24,13 @@ public class DepositController {
         DepositDetails deposit = service.createDeposit(custId, details);
         return ResponseEntity.ok(deposit);
     }
-
     @DeleteMapping("/deposits/{depositId}")
     public ResponseEntity<?> deleteDeposit(@PathVariable("custId") int custId,
                                            @PathVariable("depositId") int depositId){
         service.deleteDeposit(custId, depositId);
         return ResponseEntity.ok("Deposit deleted successfully");
     }
+
 
     @GetMapping("/deposits/{depositId}")
     public ResponseEntity<DepositDetails> getDepositById(@PathVariable("custId") int custId,

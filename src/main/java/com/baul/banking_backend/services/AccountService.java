@@ -2,6 +2,7 @@ package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.models.AccountDetails;
 import com.baul.banking_backend.models.Customer;
+import com.baul.banking_backend.models.DepositDetails;
 import com.baul.banking_backend.repos.AccountDetailsRepo;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
@@ -30,6 +31,14 @@ public class AccountService {
             details.setCustomer(customer);
             detailsRepo.save(details);
         }
+    }
+
+    public void deleteAccount(int custId, int accountId) {
+        AccountDetails accountDetails = detailsRepo
+                .findByAccountIdAndCustomerCustId(accountId, custId)
+                .orElseThrow(() -> new RuntimeException("Deposit not found"));
+
+        detailsRepo.delete(accountDetails);
     }
 
     public void activateAccount(int accountId, int custId) {

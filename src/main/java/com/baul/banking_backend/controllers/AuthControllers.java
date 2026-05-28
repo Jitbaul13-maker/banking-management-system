@@ -3,7 +3,7 @@ package com.baul.banking_backend.controllers;
 import com.baul.banking_backend.DTOs.LoginReqDTO;
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.services.LogInService;
-import com.baul.banking_backend.services.UserService;
+import com.baul.banking_backend.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthControllers {
     @Autowired
-    private UserService userservice;
+    private CustomerService userservice;
 
     @Autowired
     private LogInService logInService;
