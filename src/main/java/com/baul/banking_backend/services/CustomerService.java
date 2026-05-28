@@ -2,6 +2,7 @@ package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.repos.CustomerRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class CustomerService {
 
     @Autowired
@@ -30,10 +32,6 @@ public class CustomerService {
         repo.save(customer);
     }
 
-    public void deleteCustomer(int custId) {
-        repo.deleteById(custId);
-    }
-
     public Customer updateCustomer(int custId, Customer customer) {
 
         return repo.findById(custId).map(existingCustomer -> {
@@ -45,16 +43,25 @@ public class CustomerService {
                 existingCustomer.setCustEmail(customer.getCustEmail());
 
             if(customer.getPassword() != null)
-                existingCustomer.setPassword(customer.getPassword());
+                existingCustomer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
             if(customer.getCustAge() != null)
                 existingCustomer.setCustAge(customer.getCustAge());
 
-            if(customer.getActive() != null)
-                existingCustomer.setActive(customer.getActive());
-
             return repo.save(existingCustomer);
 
         }).orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
+
+    public Customer activateCustomer(int custId) {
+        Customer customer = repo.findById(custId).orElseThrow(() -> new RuntimeException("No customer found"));
+        customer.setActive(Boolean.TRUE);
+        return customer;
+    }
+
+    public Customer deactivateCustomer(int custId) {
+        Customer customer = repo.findById(custId).orElseThrow(() -> new RuntimeException("No customer found"));
+        customer.setActive(Boolean.FALSE);
+        return customer;
     }
 }

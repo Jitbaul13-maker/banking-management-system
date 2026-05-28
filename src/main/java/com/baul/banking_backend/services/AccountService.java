@@ -2,7 +2,6 @@ package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.models.AccountDetails;
 import com.baul.banking_backend.models.Customer;
-import com.baul.banking_backend.models.DepositDetails;
 import com.baul.banking_backend.repos.AccountDetailsRepo;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,20 +23,10 @@ public class AccountService {
     public void createAccount(int custId, AccountDetails details) {
         Customer customer = customerRepo
                 .findById(custId)
-                .orElse(null);
+                .orElseThrow(() -> new RuntimeException("account not found"));
 
-        if (customer != null) {
             details.setCustomer(customer);
             detailsRepo.save(details);
-        }
-    }
-
-    public void deleteAccount(int custId, int accountId) {
-        AccountDetails accountDetails = detailsRepo
-                .findByAccountIdAndCustomerCustId(accountId, custId)
-                .orElseThrow(() -> new RuntimeException("Deposit not found"));
-
-        detailsRepo.delete(accountDetails);
     }
 
     public void activateAccount(int accountId, int custId) {
