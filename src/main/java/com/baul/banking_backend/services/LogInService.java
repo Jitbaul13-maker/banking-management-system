@@ -1,5 +1,6 @@
 package com.baul.banking_backend.services;
 
+import com.baul.banking_backend.DTOs.AuthTokenDTO;
 import com.baul.banking_backend.DTOs.LoginReqDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,11 +19,20 @@ public class LogInService {
         this.jwtService = jwtService;
     }
 
-    public String verify(LoginReqDTO loginReq) {
+    public AuthTokenDTO verify(LoginReqDTO loginReq) {
         Authentication authentication = manager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword()));
 
-        if (authentication.isAuthenticated()) return jwtService.generateAccessToken(loginReq.getUsername());
-        return "Authentication Failed";
+        if (authentication.isAuthenticated()) {
+            String accessToken = jwtService
+                    .generateAccessToken(loginReq.getUsername());
+
+            String refreshToken = jwtService
+                    .generateRefreshToken(loginReq.getUsername());
+
+            return new AuthTokenDTO(accessToken, refreshToken);
+        }
+
+        throw new RuntimeException("Authentication Failed");
     }
 }
