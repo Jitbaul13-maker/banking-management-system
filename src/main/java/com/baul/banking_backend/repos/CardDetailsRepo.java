@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface CardDetailsRepo extends JpaRepository<CardDetails, Integer> {
-    Optional<CardDetails> findByCardIdAndCustomerCustID(int cardId, int custId);
+    Optional<CardDetails> findByCardIdAndCustomerCustId(int cardId, int custId);
 
     List<CardDetails> findByCustomerCustId(int custId);
 }

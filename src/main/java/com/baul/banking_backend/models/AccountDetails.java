@@ -36,8 +36,4 @@ public class AccountDetails {
 
     @ManyToOne
     private Customer customer;
-
-    @OneToMany(mappedBy = "accountDetails", cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-    fetch = FetchType.LAZY)
-    private List<CardDetails> cards = new ArrayList<>();
 }

@@ -28,8 +28,8 @@ public class AuthControllers {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginCustomer(@RequestBody LoginReqDTO loginReq){
-        logInService.verify(loginReq);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> loginCustomer(@RequestBody LoginReqDTO loginReq){
+        String token = logInService.verify(loginReq);
+        return ResponseEntity.ok(token);
     }
 }

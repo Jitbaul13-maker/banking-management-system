@@ -10,13 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class LogInService {
 
-    @Autowired
     private AuthenticationManager manager;
+    private JwtService jwtService;
 
-    public void verify(LoginReqDTO loginReq) {
+    public LogInService(AuthenticationManager manager, JwtService jwtService) {
+        this.manager = manager;
+        this.jwtService = jwtService;
+    }
+
+    public String verify(LoginReqDTO loginReq) {
         Authentication authentication = manager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword()));
 
-        if (authentication.isAuthenticated()) return;
+        if (authentication.isAuthenticated()) return jwtService.generateAccessToken(loginReq.getUsername());
+        return "Authentication Failed";
     }
 }

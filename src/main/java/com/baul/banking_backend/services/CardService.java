@@ -33,7 +33,7 @@ public class CardService {
 
     public void activateCard(int custId, int cardId) {
         CardDetails cardDetails = cardDetailsRepo
-                .findByCardIdAndCustomerCustID(cardId, custId)
+                .findByCardIdAndCustomerCustId(cardId, custId)
                 .orElseThrow(() -> new RuntimeException("No valid card(s) to be deleted"));
 
         cardDetails.setActive(Boolean.TRUE);
@@ -41,7 +41,7 @@ public class CardService {
 
     public void deActivateCard(int custId, int cardId) {
         CardDetails cardDetails = cardDetailsRepo
-                .findByCardIdAndCustomerCustID(cardId, custId)
+                .findByCardIdAndCustomerCustId(cardId, custId)
                 .orElseThrow(() -> new RuntimeException("No valid card(s) to be deleted"));
 
         cardDetails.setActive(Boolean.FALSE);
@@ -53,7 +53,7 @@ public class CardService {
 
     public CardDetails getCardsById(int custId, int cardId) {
         return cardDetailsRepo
-                .findByCardIdAndCustomerCustID(cardId, custId)
+                .findByCardIdAndCustomerCustId(cardId, custId)
                 .orElseThrow(() -> new RuntimeException("No valid card(s) to be deleted"));
     }
 }

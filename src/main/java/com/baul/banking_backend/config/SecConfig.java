@@ -28,7 +28,7 @@ public class SecConfig {
     private MyUserDetailsService myUserDetailsService;
 
     @Bean
-    public SecurityFilterChain mySecurityFilterChain(HttpSecurity security){
+    public SecurityFilterChain mySecurityFilterChain(HttpSecurity security) throws Exception {
 
         security.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
@@ -58,7 +58,7 @@ public class SecConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration){
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 }
