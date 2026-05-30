@@ -2,6 +2,7 @@ package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.DTOs.CreateUserDTO;
 import com.baul.banking_backend.DTOs.UpdateUserDTO;
+import com.baul.banking_backend.exception.ResourceNotfoundException;
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
@@ -61,17 +62,17 @@ public class CustomerService {
 
             return repo.save(existingCustomer);
 
-        }).orElseThrow(() -> new RuntimeException("Customer not found"));
+        }).orElseThrow(() -> new ResourceNotfoundException("Customer not found"));
     }
 
     public Customer activateCustomer(int custId) {
-        Customer customer = repo.findById(custId).orElseThrow(() -> new RuntimeException("No customer found"));
+        Customer customer = repo.findById(custId).orElseThrow(() -> new ResourceNotfoundException("No customer found"));
         customer.setActive(Boolean.TRUE);
         return customer;
     }
 
     public Customer deactivateCustomer(int custId) {
-        Customer customer = repo.findById(custId).orElseThrow(() -> new RuntimeException("No customer found"));
+        Customer customer = repo.findById(custId).orElseThrow(() -> new ResourceNotfoundException("No customer found"));
         customer.setActive(Boolean.FALSE);
         return customer;
     }

@@ -1,6 +1,7 @@
 package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.DTOs.CreateDepositDTO;
+import com.baul.banking_backend.exception.ResourceNotfoundException;
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.models.DepositDetails;
 import com.baul.banking_backend.repos.CustomerRepo;
@@ -24,7 +25,7 @@ public class DepositService {
     public void deleteDeposit(int custId, int depositId) {
         DepositDetails deposit = detailsRepo
                 .findByDepositIdAndCustomerCustId(depositId, custId)
-                .orElseThrow(() -> new RuntimeException("Deposit not found"));
+                .orElseThrow(() -> new ResourceNotfoundException("Deposit not found"));
 
         detailsRepo.delete(deposit);
     }
@@ -32,7 +33,7 @@ public class DepositService {
     public DepositDetails getDepositById(int custId, int depositId) {
         return detailsRepo
                 .findByDepositIdAndCustomerCustId(depositId, custId)
-                .orElseThrow(() -> new RuntimeException("No account found!"));
+                .orElseThrow(() -> new ResourceNotfoundException("No account found!"));
     }
 
     public List<DepositDetails> getAllDeposit(int custId) {
@@ -41,7 +42,7 @@ public class DepositService {
 
     public DepositDetails createDeposit(int custId, CreateDepositDTO deposit) {
         Customer customer = customerRepo.findById(custId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotfoundException("Customer not found"));
 
         DepositDetails depositDetails = new DepositDetails();
 

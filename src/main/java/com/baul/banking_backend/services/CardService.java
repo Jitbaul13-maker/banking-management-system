@@ -1,6 +1,7 @@
 package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.DTOs.CreateCardDTO;
+import com.baul.banking_backend.exception.ResourceNotfoundException;
 import com.baul.banking_backend.models.CardDetails;
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.repos.CardDetailsRepo;
@@ -24,7 +25,7 @@ public class CardService {
     public CardDetails createCard(int custId, CreateCardDTO card) {
         Customer customer = customerRepo
                 .findById(custId)
-                .orElseThrow(()-> new RuntimeException("No valid customer found"));
+                .orElseThrow(()-> new ResourceNotfoundException("No valid customer found"));
 
         CardDetails cardDetails = new CardDetails();
 
@@ -38,7 +39,7 @@ public class CardService {
     public void activateCard(int custId, int cardId) {
         CardDetails cardDetails = cardDetailsRepo
                 .findByCardIdAndCustomerCustId(cardId, custId)
-                .orElseThrow(() -> new RuntimeException("No valid card(s) to be deleted"));
+                .orElseThrow(() -> new ResourceNotfoundException("No valid card(s) to be deleted"));
 
         cardDetails.setActive(Boolean.TRUE);
     }
@@ -46,7 +47,7 @@ public class CardService {
     public void deActivateCard(int custId, int cardId) {
         CardDetails cardDetails = cardDetailsRepo
                 .findByCardIdAndCustomerCustId(cardId, custId)
-                .orElseThrow(() -> new RuntimeException("No valid card(s) to be deleted"));
+                .orElseThrow(() -> new ResourceNotfoundException("No valid card(s) to be deleted"));
 
         cardDetails.setActive(Boolean.FALSE);
     }
@@ -58,6 +59,6 @@ public class CardService {
     public CardDetails getCardsById(int custId, int cardId) {
         return cardDetailsRepo
                 .findByCardIdAndCustomerCustId(cardId, custId)
-                .orElseThrow(() -> new RuntimeException("No valid card(s) to be deleted"));
+                .orElseThrow(() -> new ResourceNotfoundException("No valid card(s) to be deleted"));
     }
 }

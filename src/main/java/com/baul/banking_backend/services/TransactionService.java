@@ -1,6 +1,8 @@
 package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.DTOs.TransactionDTO;
+import com.baul.banking_backend.exception.InsufficientBalanceException;
+import com.baul.banking_backend.exception.ResourceNotfoundException;
 import com.baul.banking_backend.models.AccountDetails;
 import com.baul.banking_backend.repos.AccountDetailsRepo;
 import jakarta.transaction.Transactional;
@@ -12,7 +14,7 @@ import java.math.BigDecimal;
 @Transactional
 public class TransactionService {
 
-    private AccountDetailsRepo accountDetailsRepo;
+    private final AccountDetailsRepo accountDetailsRepo;
 
     public TransactionService(AccountDetailsRepo accountDetailsRepo) {
         this.accountDetailsRepo = accountDetailsRepo;
@@ -20,7 +22,7 @@ public class TransactionService {
 
     public BigDecimal deposit(int custId, int accountId, TransactionDTO dto) {
         AccountDetails account = accountDetailsRepo.findByAccountIdAndCustomerCustId(accountId, custId)
-                .orElseThrow(() -> new RuntimeException("invalid account details"));
+                .orElseThrow(() -> new ResourceNotfoundException("Resource not found"));
 
         account.setAccountBalance(
                 account.getAccountBalance().add(dto.getAmount())
@@ -31,10 +33,10 @@ public class TransactionService {
 
     public BigDecimal withdraw(int custId, int accountId, TransactionDTO dto) {
         AccountDetails account = accountDetailsRepo.findByAccountIdAndCustomerCustId(accountId, custId)
-                .orElseThrow(() -> new RuntimeException("invalid account details"));
+                .orElseThrow(() -> new ResourceNotfoundException("Resource not found"));
 
         if (account.getAccountBalance().compareTo(dto.getAmount()) < 0) {
-            throw new RuntimeException("Insufficient Balance");
+            throw new InsufficientBalanceException("Insufficient Balance");
         }
 
         account.setAccountBalance(

@@ -1,6 +1,7 @@
 package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.DTOs.CreateAccountDTO;
+import com.baul.banking_backend.exception.ResourceNotfoundException;
 import com.baul.banking_backend.models.AccountDetails;
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.repos.AccountDetailsRepo;
@@ -15,8 +16,8 @@ import java.util.List;
 @Transactional
 public class AccountService {
 
-    private AccountDetailsRepo detailsRepo;
-    private CustomerRepo customerRepo;
+    private final AccountDetailsRepo detailsRepo;
+    private final CustomerRepo customerRepo;
 
     public AccountService(AccountDetailsRepo detailsRepo, CustomerRepo customerRepo) {
         this.detailsRepo = detailsRepo;
@@ -26,7 +27,7 @@ public class AccountService {
     public void createAccount(int custId, CreateAccountDTO account) {
         Customer customer = customerRepo
                 .findById(custId)
-                .orElseThrow(() -> new RuntimeException("account not found"));
+                .orElseThrow(() -> new ResourceNotfoundException("Account not found"));
 
         AccountDetails accountDetails = new AccountDetails();
 
@@ -40,7 +41,7 @@ public class AccountService {
     public void activateAccount(int accountId, int custId) {
         AccountDetails accountDetails = detailsRepo.
                 findByAccountIdAndCustomerCustId(accountId, custId)
-                .orElseThrow(() -> new RuntimeException("account not found"));
+                .orElseThrow(() -> new ResourceNotfoundException("Account not found"));
 
         accountDetails.setActive(true);
     }
@@ -48,7 +49,7 @@ public class AccountService {
     public void deactivateAccount(int accountId, int custId) {
         AccountDetails accountDetails = detailsRepo.
                 findByAccountIdAndCustomerCustId(accountId, custId)
-                .orElseThrow(() -> new RuntimeException("account not found"));
+                .orElseThrow(() -> new ResourceNotfoundException("Account not found"));
 
         accountDetails.setActive(false);
     }
@@ -56,7 +57,7 @@ public class AccountService {
     public AccountDetails getAccountById(int accountId, int custId) {
         return detailsRepo
                 .findByAccountIdAndCustomerCustId(accountId, custId)
-                .orElseThrow(()-> new RuntimeException("Account not found"));
+                .orElseThrow(()-> new ResourceNotfoundException("Account not found"));
     }
 
     public List<AccountDetails> getAllAccounts(int custId) {
