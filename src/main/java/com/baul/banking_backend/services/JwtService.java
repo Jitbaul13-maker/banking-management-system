@@ -1,11 +1,13 @@
 package com.baul.banking_backend.services;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -70,12 +72,13 @@ public class JwtService {
     }
 
     public boolean verifyRefreshToken(String refreshToken) {
-            try {
-                return !isRefreshTokenExpired(refreshToken);
-            }
-            catch (Exception e) {
-                return false;
-            }
+        try {
+            extractRefreshTokenAllClaims(refreshToken);
+            return true;
+        }
+        catch (JwtException e) {
+            return false;
+        }
     }
 
     public boolean isRefreshTokenExpired(String refreshToken){
@@ -84,5 +87,32 @@ public class JwtService {
 
     public Date refreshTokenExpiry(String refreshToken){
         return extractRefreshTokenClaims(refreshToken, Claims::getExpiration);
+    }
+
+    public String getAccessTokenUserName(String token) {
+        return extractAccessTokenClaims(token, Claims::getSubject);
+    }
+
+    private <T> T extractAccessTokenClaims(String token, Function<Claims, T> claimsResolver) {
+        Claims claims = extractAccessTokenAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAccessTokenAllClaims(String token) {
+        return Jwts.parser().verifyWith(getAccessKey()).build().parseSignedClaims(token).getPayload();
+    }
+
+    public boolean isAccessTokenTokenExpired(String accessToken){
+        return accessTokenExpiry(accessToken).before( new Date());
+    }
+
+    public Date accessTokenExpiry(String refreshToken){
+        return extractAccessTokenClaims(refreshToken, Claims::getExpiration);
+    }
+
+    public boolean verifyAccessToken(String token, UserDetails userDetails) {
+        String userName = getAccessTokenUserName(token);
+
+        return userDetails.getUsername().equals(userName);
     }
 }
