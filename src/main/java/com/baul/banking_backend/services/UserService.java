@@ -2,11 +2,11 @@ package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.DTOs.CreateUserDTO;
 import com.baul.banking_backend.DTOs.UpdateUserDTO;
+import com.baul.banking_backend.enums.Enums.UserRoles;
 import com.baul.banking_backend.exception.ResourceNotfoundException;
-import com.baul.banking_backend.models.Customer;
+import com.baul.banking_backend.models.User;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CustomerService {
+public class UserService {
 
     @Autowired
     private CustomerRepo repo;
@@ -23,28 +23,29 @@ public class CustomerService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<Customer> getAllCustomer() {
+    public List<User> getAllCustomer() {
         return repo.findAll();
     }
 
-    public Customer getCustomerById(int custId) {
+    public User getCustomerById(int custId) {
         return  repo.findById(custId).orElse(null);
     }
 
     public void registerCustomer(CreateUserDTO user) {
 
-        Customer customer = new Customer();
+        User customer = new User();
 
         customer.setCustName(user.getCustName());
         customer.setCustAge(user.getCustAge());
         customer.setCustEmail(user.getCustEmail());
         customer.setPassword(passwordEncoder.encode(user.getPassword()));
+        customer.setRole(UserRoles.USER);
         customer.setActive(true);
 
         repo.save(customer);
     }
 
-    public Customer updateCustomer(int custId, UpdateUserDTO user) {
+    public User updateCustomer(int custId, UpdateUserDTO user) {
 
         return repo.findById(custId).map(existingCustomer -> {
 
@@ -65,14 +66,14 @@ public class CustomerService {
         }).orElseThrow(() -> new ResourceNotfoundException("Customer not found"));
     }
 
-    public Customer activateCustomer(int custId) {
-        Customer customer = repo.findById(custId).orElseThrow(() -> new ResourceNotfoundException("No customer found"));
+    public User activateCustomer(int custId) {
+        User customer = repo.findById(custId).orElseThrow(() -> new ResourceNotfoundException("No customer found"));
         customer.setActive(Boolean.TRUE);
         return customer;
     }
 
-    public Customer deactivateCustomer(int custId) {
-        Customer customer = repo.findById(custId).orElseThrow(() -> new ResourceNotfoundException("No customer found"));
+    public User deactivateCustomer(int custId) {
+        User customer = repo.findById(custId).orElseThrow(() -> new ResourceNotfoundException("No customer found"));
         customer.setActive(Boolean.FALSE);
         return customer;
     }

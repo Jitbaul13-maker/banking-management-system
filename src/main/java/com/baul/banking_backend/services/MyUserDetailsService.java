@@ -1,6 +1,6 @@
 package com.baul.banking_backend.services;
 
-import com.baul.banking_backend.models.Customer;
+import com.baul.banking_backend.models.User;
 import com.baul.banking_backend.repos.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +16,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Customer customer = repo.getCustomerByCustName(username);
+        User customer = repo.getCustomerByCustName(username);
 
         return new MyUserPrinciple(customer);
     }

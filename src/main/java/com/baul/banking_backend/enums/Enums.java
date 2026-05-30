@@ -18,4 +18,9 @@ public class Enums {
         Recurring,
     }
 
+    public enum UserRoles{
+        ADMIN,
+        USER
+    }
+
 }

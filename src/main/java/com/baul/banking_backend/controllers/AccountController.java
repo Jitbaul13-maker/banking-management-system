@@ -12,40 +12,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customers/{custId}/accounts")
 public class AccountController {
 
-    @Autowired
-    private AccountService service;
+    private final AccountService service;
 
-    @GetMapping()
+    public AccountController(AccountService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/admin/customers/{custId}/accounts")
     public ResponseEntity<List<AccountDetails>> getAllAccounts(@PathVariable("custId") int custId){
         List<AccountDetails> accountDetails = service.getAllAccounts(custId);
         return ResponseEntity.ok(accountDetails);
     }
 
-    @GetMapping("/{accountId}")
+    @GetMapping("/customers/{custId}/accounts/{accountId}")
     public ResponseEntity<AccountDetails> getAccountById(@PathVariable("accountId") int accountId,
                                                          @PathVariable("custId") int custId){
         AccountDetails account = service.getAccountById(accountId, custId);
         return ResponseEntity.ok(account);
     }
 
-    @PostMapping()
+    @PostMapping("/customers/{custId}/accounts")
     public ResponseEntity<?> createAccount(@PathVariable("custId") int custId,
                                            @Valid @RequestBody CreateAccountDTO account){
         service.createAccount(custId, account);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/{accountId}/activate")
+    @PatchMapping("/admin/customers/{custId}/accounts/{accountId}/activate")
     public ResponseEntity<?> activateAccount(@PathVariable("accountId") int accountId,
                                              @PathVariable("custId") int custId){
         service.activateAccount(accountId, custId);
         return ResponseEntity.ok("Account activated successfully");
     }
 
-    @PatchMapping("/{accountId}/deactivate")
+    @PatchMapping("/admin/customers/{custId}/accounts/{accountId}/deactivate")
     public ResponseEntity<?> deactivateAccount(@PathVariable("accountId") int accountId,
                                                @PathVariable("custId") int custId){
         service.deactivateAccount(accountId, custId);

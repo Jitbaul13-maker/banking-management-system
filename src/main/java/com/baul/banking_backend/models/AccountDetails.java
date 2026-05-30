@@ -1,16 +1,12 @@
 package com.baul.banking_backend.models;
 
 import com.baul.banking_backend.enums.Enums.AccountType;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -34,5 +30,5 @@ public class AccountDetails {
     private Boolean active;
 
     @ManyToOne
-    private Customer customer;
+    private User customer;
 }

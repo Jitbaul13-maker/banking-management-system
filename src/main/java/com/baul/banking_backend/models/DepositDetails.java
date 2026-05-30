@@ -36,6 +36,6 @@ public class DepositDetails {
 
     @ManyToOne
     @JoinColumn(name = "cust_id")
-    private Customer customer;
+    private User customer;
 
 }

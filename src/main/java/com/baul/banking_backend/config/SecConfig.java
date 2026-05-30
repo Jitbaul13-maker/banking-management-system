@@ -34,8 +34,12 @@ public class SecConfig {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers("/auth/**").
                                 permitAll().
-                                anyRequest().
-                                authenticated())
+                                requestMatchers("/admin/**")
+                                .hasRole("ADMIN")
+                                .requestMatchers("/customers/**")
+                                .hasAnyRole("ADMIN","USER")
+                                .anyRequest()
+                                .authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

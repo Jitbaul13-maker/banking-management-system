@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -36,5 +34,5 @@ public class CardDetails {
     private Boolean active;
 
     @ManyToOne
-    private Customer customer;
+    private User customer;
 }

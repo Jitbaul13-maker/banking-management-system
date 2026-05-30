@@ -1,7 +1,6 @@
 package com.baul.banking_backend.services;
 
-import com.baul.banking_backend.models.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.baul.banking_backend.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,24 +9,24 @@ import java.util.List;
 
 public class MyUserPrinciple implements UserDetails {
 
-    private Customer customer;
+    private User user;
 
-    public MyUserPrinciple(Customer customer) {
-        this.customer = customer;
+    public MyUserPrinciple(User newUser) {
+        this.user = newUser;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
     }
 
     @Override
     public String getPassword() {
-        return customer.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return customer.getCustName();
+        return user.getCustName();
     }
 }

@@ -4,15 +4,12 @@ import com.baul.banking_backend.DTOs.AuthTokenDTO;
 import com.baul.banking_backend.DTOs.CreateUserDTO;
 import com.baul.banking_backend.DTOs.LogInResDTO;
 import com.baul.banking_backend.DTOs.LoginReqDTO;
-import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.services.JwtService;
 import com.baul.banking_backend.services.LogInService;
-import com.baul.banking_backend.services.CustomerService;
+import com.baul.banking_backend.services.UserService;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthControllers {
 
-    private CustomerService userservice;
-    private LogInService logInService;
-    private JwtService jwtService;
+    private final UserService userservice;
+    private final LogInService logInService;
+    private final JwtService jwtService;
 
-    public AuthControllers(CustomerService userservice, LogInService logInService, JwtService jwtService) {
+    public AuthControllers(UserService userservice, LogInService logInService, JwtService jwtService) {
         this.userservice = userservice;
         this.logInService = logInService;
         this.jwtService = jwtService;

@@ -2,7 +2,7 @@ package com.baul.banking_backend.services;
 
 import com.baul.banking_backend.DTOs.CreateDepositDTO;
 import com.baul.banking_backend.exception.ResourceNotfoundException;
-import com.baul.banking_backend.models.Customer;
+import com.baul.banking_backend.models.User;
 import com.baul.banking_backend.models.DepositDetails;
 import com.baul.banking_backend.repos.CustomerRepo;
 import com.baul.banking_backend.repos.DepositDetailsRepo;
@@ -41,7 +41,7 @@ public class DepositService {
     }
 
     public DepositDetails createDeposit(int custId, CreateDepositDTO deposit) {
-        Customer customer = customerRepo.findById(custId)
+        User customer = customerRepo.findById(custId)
                 .orElseThrow(() -> new ResourceNotfoundException("Customer not found"));
 
         DepositDetails depositDetails = new DepositDetails();

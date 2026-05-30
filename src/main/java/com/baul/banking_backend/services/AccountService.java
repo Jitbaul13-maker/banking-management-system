@@ -3,11 +3,10 @@ package com.baul.banking_backend.services;
 import com.baul.banking_backend.DTOs.CreateAccountDTO;
 import com.baul.banking_backend.exception.ResourceNotfoundException;
 import com.baul.banking_backend.models.AccountDetails;
-import com.baul.banking_backend.models.Customer;
+import com.baul.banking_backend.models.User;
 import com.baul.banking_backend.repos.AccountDetailsRepo;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class AccountService {
     }
 
     public void createAccount(int custId, CreateAccountDTO account) {
-        Customer customer = customerRepo
+        User customer = customerRepo
                 .findById(custId)
                 .orElseThrow(() -> new ResourceNotfoundException("Account not found"));
 

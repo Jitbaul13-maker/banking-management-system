@@ -3,7 +3,7 @@ package com.baul.banking_backend.services;
 import com.baul.banking_backend.DTOs.CreateCardDTO;
 import com.baul.banking_backend.exception.ResourceNotfoundException;
 import com.baul.banking_backend.models.CardDetails;
-import com.baul.banking_backend.models.Customer;
+import com.baul.banking_backend.models.User;
 import com.baul.banking_backend.repos.CardDetailsRepo;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
@@ -23,7 +23,7 @@ public class CardService {
     private CustomerRepo customerRepo;
 
     public CardDetails createCard(int custId, CreateCardDTO card) {
-        Customer customer = customerRepo
+        User customer = customerRepo
                 .findById(custId)
                 .orElseThrow(()-> new ResourceNotfoundException("No valid customer found"));
 
