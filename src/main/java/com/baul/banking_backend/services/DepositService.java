@@ -48,6 +48,10 @@ public class DepositService {
 
         depositDetails.setCustomer(customer);
         depositDetails.setMaturityDate(deposit.getIssueDate().plusMonths(deposit.getTenureMonths()));
+        depositDetails.setDepositType(deposit.getDepositType());
+        depositDetails.setDepositValue(deposit.getDepositValue());
+        depositDetails.setInterest(deposit.getInterest());
+        depositDetails.setIssueDate(deposit.getIssueDate());
 
         return detailsRepo.save(depositDetails);
     }

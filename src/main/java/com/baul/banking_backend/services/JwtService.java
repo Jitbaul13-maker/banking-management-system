@@ -110,9 +110,13 @@ public class JwtService {
         return extractAccessTokenClaims(refreshToken, Claims::getExpiration);
     }
 
-    public boolean verifyAccessToken(String token, UserDetails userDetails) {
-        String userName = getAccessTokenUserName(token);
-
-        return userDetails.getUsername().equals(userName);
+    public boolean verifyAccessToken(String token) {
+        try {
+            extractAccessTokenAllClaims(token);
+            return true;
+        }
+        catch (JwtException e) {
+            return false;
+        }
     }
 }
