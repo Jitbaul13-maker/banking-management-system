@@ -1,7 +1,9 @@
 package com.baul.banking_backend.controllers;
 
+import com.baul.banking_backend.DTOs.CreateCardDTO;
 import com.baul.banking_backend.models.CardDetails;
 import com.baul.banking_backend.services.CardService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,7 @@ public class CardController {
 
     @PostMapping()
     public ResponseEntity<CardDetails> createCard(@PathVariable("custId") int custId,
-                                                  @RequestBody CardDetails card){
+                                                  @Valid @RequestBody CreateCardDTO card){
         CardDetails cardDetails = service.createCard(custId, card);
         return ResponseEntity.status(HttpStatus.CREATED).body(cardDetails);
     }

@@ -16,7 +16,6 @@ public class Enums {
     public enum DepositType {
         Fixed,
         Recurring,
-        Special
     }
 
 }

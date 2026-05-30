@@ -1,5 +1,6 @@
 package com.baul.banking_backend.services;
 
+import com.baul.banking_backend.DTOs.CreateAccountDTO;
 import com.baul.banking_backend.models.AccountDetails;
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.repos.AccountDetailsRepo;
@@ -14,19 +15,26 @@ import java.util.List;
 @Transactional
 public class AccountService {
 
-    @Autowired
     private AccountDetailsRepo detailsRepo;
-
-    @Autowired
     private CustomerRepo customerRepo;
 
-    public void createAccount(int custId, AccountDetails details) {
+    public AccountService(AccountDetailsRepo detailsRepo, CustomerRepo customerRepo) {
+        this.detailsRepo = detailsRepo;
+        this.customerRepo = customerRepo;
+    }
+
+    public void createAccount(int custId, CreateAccountDTO account) {
         Customer customer = customerRepo
                 .findById(custId)
                 .orElseThrow(() -> new RuntimeException("account not found"));
 
-            details.setCustomer(customer);
-            detailsRepo.save(details);
+        AccountDetails accountDetails = new AccountDetails();
+
+        accountDetails.setAccountType(account.getAccountType());
+        accountDetails.setCustomer(customer);
+        accountDetails.setActive(true);
+
+        detailsRepo.save(accountDetails);
     }
 
     public void activateAccount(int accountId, int custId) {

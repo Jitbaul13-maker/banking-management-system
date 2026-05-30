@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,13 +25,13 @@ public class CardDetails {
     @Enumerated(EnumType.STRING)
     private CardType cardType;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime issueDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate issueDate;
 
     private Integer tenure;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime expiryDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate expiryDate;
 
     private Boolean active;
 

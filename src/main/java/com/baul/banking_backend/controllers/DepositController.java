@@ -1,7 +1,9 @@
 package com.baul.banking_backend.controllers;
 
+import com.baul.banking_backend.DTOs.CreateDepositDTO;
 import com.baul.banking_backend.models.DepositDetails;
 import com.baul.banking_backend.services.DepositService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,17 +22,17 @@ public class DepositController {
 
     @PostMapping("/deposits")
     public ResponseEntity<DepositDetails> createDeposit(@PathVariable int custId,
-                                           @RequestBody DepositDetails details){
-        DepositDetails deposit = service.createDeposit(custId, details);
-        return ResponseEntity.ok(deposit);
+                                                        @Valid  @RequestBody CreateDepositDTO deposit){
+        DepositDetails depositDetails = service.createDeposit(custId, deposit);
+        return ResponseEntity.ok(depositDetails);
     }
+
     @DeleteMapping("/deposits/{depositId}")
     public ResponseEntity<?> deleteDeposit(@PathVariable("custId") int custId,
                                            @PathVariable("depositId") int depositId){
         service.deleteDeposit(custId, depositId);
         return ResponseEntity.ok("Deposit deleted successfully");
     }
-
 
     @GetMapping("/deposits/{depositId}")
     public ResponseEntity<DepositDetails> getDepositById(@PathVariable("custId") int custId,
@@ -44,6 +46,5 @@ public class DepositController {
         List<DepositDetails> deposit = service.getAllDeposit(custId);
         return ResponseEntity.ok(deposit);
     }
-
 
 }

@@ -1,8 +1,11 @@
 package com.baul.banking_backend.services;
 
+import com.baul.banking_backend.DTOs.CreateUserDTO;
+import com.baul.banking_backend.DTOs.UpdateUserDTO;
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,26 +30,34 @@ public class CustomerService {
         return  repo.findById(custId).orElse(null);
     }
 
-    public void registerCustomer(Customer customer) {
-        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
+    public void registerCustomer(CreateUserDTO user) {
+
+        Customer customer = new Customer();
+
+        customer.setCustName(user.getCustName());
+        customer.setCustAge(user.getCustAge());
+        customer.setCustEmail(user.getCustEmail());
+        customer.setPassword(passwordEncoder.encode(user.getPassword()));
+        customer.setActive(true);
+
         repo.save(customer);
     }
 
-    public Customer updateCustomer(int custId, Customer customer) {
+    public Customer updateCustomer(int custId, UpdateUserDTO user) {
 
         return repo.findById(custId).map(existingCustomer -> {
 
-            if(customer.getCustName() != null)
-                existingCustomer.setCustName(customer.getCustName());
+            if(user.getCustName() != null)
+                existingCustomer.setCustName(user.getCustName());
 
-            if(customer.getCustEmail() != null)
-                existingCustomer.setCustEmail(customer.getCustEmail());
+            if(user.getCustEmail() != null)
+                existingCustomer.setCustEmail(user.getCustEmail());
 
-            if(customer.getPassword() != null)
-                existingCustomer.setPassword(passwordEncoder.encode(customer.getPassword()));
+            if(user.getPassword() != null)
+                existingCustomer.setPassword(passwordEncoder.encode(user.getPassword()));
 
-            if(customer.getCustAge() != null)
-                existingCustomer.setCustAge(customer.getCustAge());
+            if(user.getCustAge() != null)
+                existingCustomer.setCustAge(user.getCustAge());
 
             return repo.save(existingCustomer);
 

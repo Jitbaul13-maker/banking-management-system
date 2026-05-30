@@ -1,7 +1,9 @@
 package com.baul.banking_backend.controllers;
 
+import com.baul.banking_backend.DTOs.CreateAccountDTO;
 import com.baul.banking_backend.models.AccountDetails;
 import com.baul.banking_backend.services.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +33,8 @@ public class AccountController {
 
     @PostMapping()
     public ResponseEntity<?> createAccount(@PathVariable("custId") int custId,
-                                           @RequestBody AccountDetails details){
-        service.createAccount(custId, details);
+                                           @Valid @RequestBody CreateAccountDTO account){
+        service.createAccount(custId, account);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

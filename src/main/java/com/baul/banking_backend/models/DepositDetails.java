@@ -26,7 +26,7 @@ public class DepositDetails {
 
     private BigDecimal interest;
 
-    private int tenureMonths;
+    private Integer tenureMonths;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate issueDate;

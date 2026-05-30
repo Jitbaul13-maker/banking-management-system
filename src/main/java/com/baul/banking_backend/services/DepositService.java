@@ -1,5 +1,6 @@
 package com.baul.banking_backend.services;
 
+import com.baul.banking_backend.DTOs.CreateDepositDTO;
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.models.DepositDetails;
 import com.baul.banking_backend.repos.CustomerRepo;
@@ -38,20 +39,15 @@ public class DepositService {
         return detailsRepo.findByCustomerCustId(custId);
     }
 
-    public DepositDetails createDeposit(int custId, DepositDetails details) {
+    public DepositDetails createDeposit(int custId, CreateDepositDTO deposit) {
         Customer customer = customerRepo.findById(custId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        details.setCustomer(customer);
+        DepositDetails depositDetails = new DepositDetails();
 
-        details.setMaturityDate(
-                details
-                        .getIssueDate()
-                        .plusMonths(
-                                details
-                                        .getTenureMonths())
-        );
+        depositDetails.setCustomer(customer);
+        depositDetails.setMaturityDate(deposit.getIssueDate().plusMonths(deposit.getTenureMonths()));
 
-        return detailsRepo.save(details);
+        return detailsRepo.save(depositDetails);
     }
 }

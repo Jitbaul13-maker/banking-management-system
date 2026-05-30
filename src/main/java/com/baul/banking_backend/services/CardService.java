@@ -1,5 +1,6 @@
 package com.baul.banking_backend.services;
 
+import com.baul.banking_backend.DTOs.CreateCardDTO;
 import com.baul.banking_backend.models.CardDetails;
 import com.baul.banking_backend.models.Customer;
 import com.baul.banking_backend.repos.CardDetailsRepo;
@@ -20,15 +21,18 @@ public class CardService {
     @Autowired
     private CustomerRepo customerRepo;
 
-    public CardDetails createCard(int custId, CardDetails card) {
+    public CardDetails createCard(int custId, CreateCardDTO card) {
         Customer customer = customerRepo
                 .findById(custId)
                 .orElseThrow(()-> new RuntimeException("No valid customer found"));
 
-            card.setExpiryDate(card.getIssueDate().plusMonths(card.getTenure()));
-            card.setCustomer(customer);
+        CardDetails cardDetails = new CardDetails();
 
-        return cardDetailsRepo.save(card);
+        cardDetails.setExpiryDate(card.getIssueDate().plusMonths(card.getTenure()));
+        cardDetails.setCustomer(customer);
+        cardDetails.setActive(true);
+
+        return cardDetailsRepo.save(cardDetails);
     }
 
     public void activateCard(int custId, int cardId) {

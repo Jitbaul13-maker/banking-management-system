@@ -1,6 +1,7 @@
 package com.baul.banking_backend.controllers;
 
 import com.baul.banking_backend.DTOs.AuthTokenDTO;
+import com.baul.banking_backend.DTOs.CreateUserDTO;
 import com.baul.banking_backend.DTOs.LogInResDTO;
 import com.baul.banking_backend.DTOs.LoginReqDTO;
 import com.baul.banking_backend.models.Customer;
@@ -10,6 +11,7 @@ import com.baul.banking_backend.services.CustomerService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +31,15 @@ public class AuthControllers {
         this.jwtService = jwtService;
     }
 
-    @PostMapping("/createCustomer")
-    public ResponseEntity<?> createCustomer(@RequestBody Customer customer){
-        userservice.registerCustomer(customer);
+    @PostMapping("/create")
+    public ResponseEntity<?> createCustomer( @Valid @RequestBody CreateUserDTO user){
+        userservice.registerCustomer(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LogInResDTO> loginCustomer(@RequestBody LoginReqDTO loginReq, HttpServletResponse response){
+    public ResponseEntity<LogInResDTO> loginCustomer(@Valid @RequestBody LoginReqDTO loginReq,
+                                                     HttpServletResponse response){
         AuthTokenDTO tokens = logInService.verify(loginReq);
 
         Cookie cookie = new Cookie("refreshToken", tokens.getRefreshToken());

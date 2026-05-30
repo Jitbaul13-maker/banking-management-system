@@ -22,10 +22,6 @@ public class TransactionService {
         AccountDetails account = accountDetailsRepo.findByAccountIdAndCustomerCustId(accountId, custId)
                 .orElseThrow(() -> new RuntimeException("invalid account details"));
 
-        if (dto.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("Amount must be greater than zero");
-        }
-
         account.setAccountBalance(
                 account.getAccountBalance().add(dto.getAmount())
         );
@@ -39,10 +35,6 @@ public class TransactionService {
 
         if (account.getAccountBalance().compareTo(dto.getAmount()) < 0) {
             throw new RuntimeException("Insufficient Balance");
-        }
-
-        if (dto.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("Amount must be greater than zero");
         }
 
         account.setAccountBalance(

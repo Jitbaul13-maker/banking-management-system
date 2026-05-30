@@ -31,7 +31,6 @@ public class AccountDetails {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
     private Boolean active;
 
     @ManyToOne
