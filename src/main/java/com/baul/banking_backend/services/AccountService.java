@@ -7,6 +7,7 @@ import com.baul.banking_backend.models.User;
 import com.baul.banking_backend.repos.AccountDetailsRepo;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +24,17 @@ public class AccountService {
         this.customerRepo = customerRepo;
     }
 
-    public void createAccount(int custId, CreateAccountDTO account) {
+    public int getUserId(){
+        MyUserPrinciple user = (MyUserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getUserId();
+    }
+
+    public void createAccount(CreateAccountDTO account) {
+
+        int userId = getUserId();
+
         User customer = customerRepo
-                .findById(custId)
+                .findById(userId)
                 .orElseThrow(() -> new ResourceNotfoundException("Account not found"));
 
         AccountDetails accountDetails = new AccountDetails();
@@ -53,14 +62,16 @@ public class AccountService {
         accountDetails.setActive(false);
     }
 
-    public AccountDetails getAccountById(int accountId, int custId) {
+    public AccountDetails getAccountById(int accountId) {
+        int userId = getUserId();
         return detailsRepo
-                .findByAccountIdAndCustomerCustId(accountId, custId)
+                .findByAccountIdAndCustomerCustId(accountId, userId)
                 .orElseThrow(()-> new ResourceNotfoundException("Account not found"));
     }
 
-    public List<AccountDetails> getAllAccounts(int custId) {
+    public List<AccountDetails> getAllAccounts() {
+        int userId = getUserId();
         return detailsRepo
-                .findByCustomerCustId(custId);
+                .findByCustomerCustId(userId);
     }
 }

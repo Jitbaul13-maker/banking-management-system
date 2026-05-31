@@ -8,6 +8,7 @@ import com.baul.banking_backend.repos.CardDetailsRepo;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,16 +17,25 @@ import java.util.List;
 @Transactional
 public class CardService {
 
-    @Autowired
-    private  CardDetailsRepo cardDetailsRepo;
+    private final CardDetailsRepo cardDetailsRepo;
+    private final CustomerRepo customerRepo;
 
-    @Autowired
-    private CustomerRepo customerRepo;
+    public CardService(CardDetailsRepo cardDetailsRepo, CustomerRepo customerRepo) {
+        this.cardDetailsRepo = cardDetailsRepo;
+        this.customerRepo = customerRepo;
+    }
 
-    public CardDetails createCard(int custId, CreateCardDTO card) {
+    public int getUserId(){
+        MyUserPrinciple user = (MyUserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getUserId();
+    }
+
+    public CardDetails createCard(CreateCardDTO card) {
+
+        int userId = getUserId();
         User customer = customerRepo
-                .findById(custId)
-                .orElseThrow(()-> new ResourceNotfoundException("No valid customer found"));
+                .findById(userId)
+                .orElseThrow(() -> new ResourceNotfoundException("No valid customer found"));
 
         CardDetails cardDetails = new CardDetails();
 
@@ -52,13 +62,15 @@ public class CardService {
         cardDetails.setActive(Boolean.FALSE);
     }
 
-    public List<CardDetails> getAllCards(int custId) {
-        return cardDetailsRepo.findByCustomerCustId(custId);
+    public List<CardDetails> getAllCards() {
+        int userId = getUserId();
+        return cardDetailsRepo.findByCustomerCustId(userId);
     }
 
-    public CardDetails getCardsById(int custId, int cardId) {
+    public CardDetails getCardsById(int cardId) {
+        int userId = getUserId();
         return cardDetailsRepo
-                .findByCardIdAndCustomerCustId(cardId, custId)
+                .findByCardIdAndCustomerCustId(cardId, userId)
                 .orElseThrow(() -> new ResourceNotfoundException("No valid card(s) to be deleted"));
     }
 }

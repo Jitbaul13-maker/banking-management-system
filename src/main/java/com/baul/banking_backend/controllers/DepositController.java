@@ -19,10 +19,10 @@ public class DepositController {
         this.service = service;
     }
 
-    @PostMapping("/customers/{custId}/deposits")
+    @PostMapping("/customers/me/deposits")
     public ResponseEntity<DepositDetails> createDeposit(@PathVariable int custId,
                                                         @Valid  @RequestBody CreateDepositDTO deposit){
-        DepositDetails depositDetails = service.createDeposit(custId, deposit);
+        DepositDetails depositDetails = service.createDeposit(deposit);
         return ResponseEntity.ok(depositDetails);
     }
 
@@ -33,16 +33,15 @@ public class DepositController {
         return ResponseEntity.ok("Deposit deleted successfully");
     }
 
-    @GetMapping("/customers/{custId}/deposits/{depositId}")
-    public ResponseEntity<DepositDetails> getDepositById(@PathVariable("custId") int custId,
-                                           @PathVariable("depositId") int depositId){
-        DepositDetails deposit = service.getDepositById(custId, depositId);
+    @GetMapping("/customers/me/deposits/{depositId}")
+    public ResponseEntity<DepositDetails> getDepositById(@PathVariable("depositId") int depositId){
+        DepositDetails deposit = service.getDepositById(depositId);
         return ResponseEntity.ok(deposit);
     }
 
-    @GetMapping("/customers/{custId}/deposits")
-    public ResponseEntity<List<DepositDetails>> getAllDeposit(@PathVariable("custId") int custId){
-        List<DepositDetails> deposit = service.getAllDeposit(custId);
+    @GetMapping("/customers/me/deposits")
+    public ResponseEntity<List<DepositDetails>> getAllDeposit(){
+        List<DepositDetails> deposit = service.getAllDeposit();
         return ResponseEntity.ok(deposit);
     }
 

@@ -20,23 +20,21 @@ public class AccountController {
         this.service = service;
     }
 
-    @GetMapping("/admin/customers/{custId}/accounts")
-    public ResponseEntity<List<AccountDetails>> getAllAccounts(@PathVariable("custId") int custId){
-        List<AccountDetails> accountDetails = service.getAllAccounts(custId);
+    @GetMapping("/admin/customers/me/accounts")
+    public ResponseEntity<List<AccountDetails>> getAllAccounts(){
+        List<AccountDetails> accountDetails = service.getAllAccounts();
         return ResponseEntity.ok(accountDetails);
     }
 
-    @GetMapping("/customers/{custId}/accounts/{accountId}")
-    public ResponseEntity<AccountDetails> getAccountById(@PathVariable("accountId") int accountId,
-                                                         @PathVariable("custId") int custId){
-        AccountDetails account = service.getAccountById(accountId, custId);
+    @GetMapping("/customers/me/accounts/{accountId}")
+    public ResponseEntity<AccountDetails> getAccountById(@PathVariable("accountId") int accountId){
+        AccountDetails account = service.getAccountById(accountId);
         return ResponseEntity.ok(account);
     }
 
-    @PostMapping("/customers/{custId}/accounts")
-    public ResponseEntity<?> createAccount(@PathVariable("custId") int custId,
-                                           @Valid @RequestBody CreateAccountDTO account){
-        service.createAccount(custId, account);
+    @PostMapping("/customers/me/accounts")
+    public ResponseEntity<?> createAccount(@Valid @RequestBody CreateAccountDTO account){
+        service.createAccount(account);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

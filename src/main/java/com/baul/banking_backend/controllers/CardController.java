@@ -19,10 +19,9 @@ public class CardController {
         this.service = service;
     }
 
-    @PostMapping("/customers/{custId}/cards")
-    public ResponseEntity<CardDetails> createCard(@PathVariable("custId") int custId,
-                                                  @Valid @RequestBody CreateCardDTO card){
-        CardDetails cardDetails = service.createCard(custId, card);
+    @PostMapping("/customers/me/cards")
+    public ResponseEntity<CardDetails> createCard(@Valid @RequestBody CreateCardDTO card){
+        CardDetails cardDetails = service.createCard(card);
         return ResponseEntity.status(HttpStatus.CREATED).body(cardDetails);
     }
 
@@ -40,16 +39,15 @@ public class CardController {
         return ResponseEntity.ok("Deactivated Successfully");
     }
 
-    @GetMapping("customers/{custId}/cards")
-    public ResponseEntity<List<CardDetails>> getAllCards(@PathVariable("custId") int custId){
-        List<CardDetails> cardDetails = service.getAllCards(custId);
+    @GetMapping("customers/me/cards")
+    public ResponseEntity<List<CardDetails>> getAllCards(){
+        List<CardDetails> cardDetails = service.getAllCards();
         return  ResponseEntity.ok(cardDetails);
     }
 
-    @GetMapping("/customers/{custId}/cards/{cardId}")
-    public ResponseEntity<CardDetails> getCardsById(@PathVariable("custId") int custId,
-                                                       @PathVariable("cardId") int cardId){
-        CardDetails cardDetails = service.getCardsById(custId, cardId);
+    @GetMapping("/customers/me/cards/{cardId}")
+    public ResponseEntity<CardDetails> getCardsById(@PathVariable("cardId") int cardId){
+        CardDetails cardDetails = service.getCardsById(cardId);
         return  ResponseEntity.ok(cardDetails);
     }
 

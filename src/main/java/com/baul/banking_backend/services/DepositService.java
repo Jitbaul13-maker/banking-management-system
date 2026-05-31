@@ -8,6 +8,7 @@ import com.baul.banking_backend.repos.CustomerRepo;
 import com.baul.banking_backend.repos.DepositDetailsRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +17,13 @@ import java.util.List;
 @Transactional
 public class DepositService {
 
-    @Autowired
-    private DepositDetailsRepo detailsRepo;
+    private final DepositDetailsRepo detailsRepo;
+    private final CustomerRepo customerRepo;
 
-    @Autowired
-    private CustomerRepo customerRepo;
+    public DepositService(DepositDetailsRepo detailsRepo, CustomerRepo customerRepo) {
+        this.detailsRepo = detailsRepo;
+        this.customerRepo = customerRepo;
+    }
 
     public void deleteDeposit(int custId, int depositId) {
         DepositDetails deposit = detailsRepo
@@ -30,18 +33,27 @@ public class DepositService {
         detailsRepo.delete(deposit);
     }
 
-    public DepositDetails getDepositById(int custId, int depositId) {
+    public int getUserId(){
+        MyUserPrinciple user = (MyUserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return user.getUserId();
+    }
+
+    public DepositDetails getDepositById(int depositId) {
+        int userId = getUserId();
         return detailsRepo
-                .findByDepositIdAndCustomerCustId(depositId, custId)
+                .findByDepositIdAndCustomerCustId(depositId, userId)
                 .orElseThrow(() -> new ResourceNotfoundException("No account found!"));
     }
 
-    public List<DepositDetails> getAllDeposit(int custId) {
-        return detailsRepo.findByCustomerCustId(custId);
+    public List<DepositDetails> getAllDeposit() {
+        int userId = getUserId();
+        return detailsRepo.findByCustomerCustId(userId);
     }
 
-    public DepositDetails createDeposit(int custId, CreateDepositDTO deposit) {
-        User customer = customerRepo.findById(custId)
+    public DepositDetails createDeposit(CreateDepositDTO deposit) {
+
+        int userId = getUserId();
+        User customer = customerRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotfoundException("Customer not found"));
 
         DepositDetails depositDetails = new DepositDetails();
@@ -52,6 +64,8 @@ public class DepositService {
         depositDetails.setDepositValue(deposit.getDepositValue());
         depositDetails.setInterest(deposit.getInterest());
         depositDetails.setIssueDate(deposit.getIssueDate());
+
+        depositDetails.setActive(true);
 
         return detailsRepo.save(depositDetails);
     }

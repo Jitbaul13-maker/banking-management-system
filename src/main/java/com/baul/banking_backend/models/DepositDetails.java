@@ -28,6 +28,8 @@ public class DepositDetails {
 
     private Integer tenureMonths;
 
+    private Boolean active;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate issueDate;
 
