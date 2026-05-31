@@ -137,8 +137,8 @@ Authorization: Bearer <access_token>
 
 ```http
 GET    /customers
-GET    /customers/{custId}
-PATCH  /customers/{custId}
+GET    /customers/me
+PATCH  /customers/me
 PATCH  /customers/{custId}/activate
 PATCH  /customers/{custId}/deactivate
 ```
@@ -146,9 +146,9 @@ PATCH  /customers/{custId}/deactivate
 ### Account APIs
 
 ```http
-POST   /customers/{custId}/accounts
-GET    /customers/{custId}/accounts
-GET    /customers/{custId}/accounts/{accountId}
+POST   /customers/me/accounts
+GET    /customers/me/accounts
+GET    /customers/me/accounts/{accountId}
 PATCH  /customers/{custId}/accounts/{accountId}/activate
 PATCH  /customers/{custId}/accounts/{accountId}/deactivate
 ```
@@ -156,16 +156,16 @@ PATCH  /customers/{custId}/accounts/{accountId}/deactivate
 ### Transaction APIs
 
 ```http
-PATCH  /customers/{custId}/accounts/{accountId}/deposit
-PATCH  /customers/{custId}/accounts/{accountId}/withdraw
+PATCH  /customers/me/accounts/{accountId}/deposit
+PATCH  /customers/me/accounts/{accountId}/withdraw
 ```
 
 ### Card APIs
 
 ```http
-POST   /customers/{custId}/cards
-GET    /customers/{custId}/cards
-GET    /customers/{custId}/cards/{cardId}
+POST   /customers/me/cards
+GET    /customers/me/cards
+GET    /customers/me/cards/{cardId}
 PATCH  /customers/{custId}/cards/{cardId}/activate
 PATCH  /customers/{custId}/cards/{cardId}/deactivate
 ```
@@ -173,9 +173,9 @@ PATCH  /customers/{custId}/cards/{cardId}/deactivate
 ### Deposit APIs
 
 ```http
-POST   /customers/{custId}/deposits
-GET    /customers/{custId}/deposits
-GET    /customers/{custId}/deposits/{depositId}
+POST   /customers/me/deposits
+GET    /customers/me/deposits
+GET    /customers/me/deposits/{depositId}
 DELETE /customers/{custId}/deposits/{depositId}
 ```
 
@@ -186,7 +186,7 @@ DELETE /customers/{custId}/deposits/{depositId}
 ### Clone Repository
 
 ```bash
-git clone https://github.com/<your-username>/<repository-name>.git
+git clone https://github.com/<Jitbaul13-maker>/<banking-management-system>.git
 ```
 
 ### Configure Database
@@ -202,8 +202,8 @@ spring.datasource.password=password
 ### Configure JWT Secrets
 
 ```properties
-jwt.access-secret=YOUR_BASE64_SECRET
-jwt.refresh-secret=YOUR_BASE64_SECRET
+jwt.access-secret=MY_BASE64_SECRET
+jwt.refresh-secret=MY_BASE64_SECRET
 ```
 
 ### Run Application
