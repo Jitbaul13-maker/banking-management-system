@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MyUserPrinciple implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public MyUserPrinciple(User newUser) {
         this.user = newUser;
@@ -18,6 +18,10 @@ public class MyUserPrinciple implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+    }
+
+    public int getUserId(){
+        return user.getCustId();
     }
 
     @Override

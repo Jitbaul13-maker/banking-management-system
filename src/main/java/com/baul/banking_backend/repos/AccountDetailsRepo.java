@@ -9,6 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface AccountDetailsRepo extends JpaRepository<AccountDetails, Integer> {
+
     List<AccountDetails> findByCustomerCustId(int custId);
+
     Optional<AccountDetails> findByAccountIdAndCustomerCustId(int accountId, int custId);
+
+    Optional<AccountDetails> findByUserCustNameAndAccountId(String userName, int accountId);
+
+    Optional<AccountDetails> findByUserCustIdAndAccountId(int userId, int accountId);
 }

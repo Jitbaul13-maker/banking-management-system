@@ -9,28 +9,26 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/customers/{custId}/accounts/{accountId}")
+@RequestMapping("/customers/me/accounts/{accountId}")
 public class TransactionController {
 
-    private TransactionService transactionService;
+    private final TransactionService transactionService;
 
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
 
     @PatchMapping("/deposit")
-    public ResponseEntity<BigDecimal> deposit(@PathVariable("custId") int custId,
-                                     @PathVariable("accountId") int accountId,
-                                     @Valid @RequestBody TransactionDTO dto){
-        BigDecimal updatedAmount = transactionService.deposit(custId, accountId, dto);
+    public ResponseEntity<BigDecimal> deposit(@PathVariable("accountId") int accountId,
+                                                @Valid @RequestBody TransactionDTO dto){
+        BigDecimal updatedAmount = transactionService.deposit(accountId, dto);
         return ResponseEntity.ok(updatedAmount);
     }
 
     @PatchMapping("/withdraw")
-    public ResponseEntity<BigDecimal> withdraw(@PathVariable("custId") int custId,
-                                              @PathVariable("accountId") int accountId,
-                                              @Valid @RequestBody TransactionDTO dto){
-        BigDecimal updatedAmount = transactionService.withdraw(custId, accountId, dto);
+    public ResponseEntity<BigDecimal> withdraw(@PathVariable("accountId") int accountId,
+                                                @Valid @RequestBody TransactionDTO dto){
+        BigDecimal updatedAmount = transactionService.withdraw(accountId, dto);
         return ResponseEntity.ok(updatedAmount);
     }
 }
