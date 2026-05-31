@@ -56,11 +56,11 @@ The project simulates core banking operations such as customer management, accou
 ## Tech Stack
 
 ### Backend
-- Java 21
+-  Java 21
 - Spring Boot
-- Spring Security
-- Spring Data JPA
-- Hibernate
+- Spring Security + JWT
+- Docker
+- Docker Compose
 
 ### Database
 - PostgreSQL
@@ -73,6 +73,9 @@ The project simulates core banking operations such as customer management, accou
 
 ### Testing Tools
 - Postman
+
+# Run the project
+docker compose up --build
 
 ---
 
