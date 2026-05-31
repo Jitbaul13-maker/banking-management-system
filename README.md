@@ -63,7 +63,7 @@ The project simulates core banking operations such as customer management, accou
 - Hibernate
 
 ### Database
-- MySQL
+- PostgreSQL
 
 ### Authentication
 - JWT (Access & Refresh Tokens)
