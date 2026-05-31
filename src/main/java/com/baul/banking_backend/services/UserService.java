@@ -45,16 +45,16 @@ public class UserService {
     public User updateCurrentUser(UpdateUserDTO updateUserDTO){
         User user = getCurrentUser();
 
-        if(user.getCustName() != null)
+        if(updateUserDTO.getCustName() != null)
             user.setCustName(updateUserDTO.getCustName());
 
-        if(user.getCustEmail() != null)
+        if(updateUserDTO.getCustEmail() != null)
             user.setCustEmail(updateUserDTO.getCustEmail());
 
-        if(user.getPassword() != null)
+        if(updateUserDTO.getPassword() != null)
             user.setPassword(passwordEncoder.encode(updateUserDTO.getPassword()));
 
-        if(user.getCustAge() != null)
+        if(updateUserDTO.getCustAge() != null)
             user.setCustAge(updateUserDTO.getCustAge());
 
         return repo.save(user);

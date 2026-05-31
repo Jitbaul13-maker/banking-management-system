@@ -17,7 +17,7 @@ public class MyGlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body( new ErrorResponseDTO
                         (LocalDateTime.now(),
-                        400,
+                        404,
                         "Bad Request",
                         ex.getMessage())
                 );
@@ -41,9 +41,21 @@ public class MyGlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body( new ErrorResponseDTO
                         (LocalDateTime.now(),
-                                404,
+                                409,
                                 "Not Found",
                                 ex.getMessage())
                 );
+    }
+
+    @ExceptionHandler(InactiveAccountException.class)
+    public ResponseEntity<ErrorResponseDTO> InactiveAccountException(InactiveAccountException ex){
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponseDTO(
+                        LocalDateTime.now(),
+                        403,
+                        "Forbidden",
+                        ex.getMessage()
+                ));
     }
 }
