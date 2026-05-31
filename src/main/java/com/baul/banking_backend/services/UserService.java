@@ -8,6 +8,8 @@ import com.baul.banking_backend.models.User;
 import com.baul.banking_backend.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,33 @@ public class UserService {
 
     public User getCustomerById(int custId) {
         return  repo.findById(custId).orElse(null);
+    }
+
+    public User getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userName = authentication.getName();
+
+        return repo.findByCustName(userName)
+                .orElseThrow(() -> new ResourceNotfoundException("User Not Found"));
+    }
+
+    public User updateCurrentUser(UpdateUserDTO updateUserDTO){
+        User user = getCurrentUser();
+
+        if(user.getCustName() != null)
+            user.setCustName(updateUserDTO.getCustName());
+
+        if(user.getCustEmail() != null)
+            user.setCustEmail(updateUserDTO.getCustEmail());
+
+        if(user.getPassword() != null)
+            user.setPassword(passwordEncoder.encode(updateUserDTO.getPassword()));
+
+        if(user.getCustAge() != null)
+            user.setCustAge(updateUserDTO.getCustAge());
+
+        return repo.save(user);
     }
 
     public void registerCustomer(CreateUserDTO user) {

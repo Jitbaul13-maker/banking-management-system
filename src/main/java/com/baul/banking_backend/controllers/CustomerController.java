@@ -23,21 +23,20 @@ public class CustomerController {
         return ResponseEntity.ok(userservice.getAllCustomer());
     }
 
-    @GetMapping("/customers/{custId}")
-    public ResponseEntity<User> getCustomerById(@PathVariable("custId") int custId){
-        User customer = userservice.getCustomerById(custId);
-        if (customer != null){
-            return ResponseEntity.ok(customer);
-        }
-        return ResponseEntity.notFound().build();
+    @GetMapping("/customers/me")
+    public ResponseEntity<User> getCurrentUser() {
+        return ResponseEntity.ok(userservice.getCurrentUser());
     }
 
-    @PatchMapping("/customers/{custId}")
-    public ResponseEntity<User> updateCustomer(@PathVariable("custId") int custId,
-                                               @Valid @RequestBody UpdateUserDTO user){
-        User customer1 = userservice.updateCustomer(custId, user);
-        return ResponseEntity.ok(customer1);
+    @PatchMapping("/customers/me")
+    public ResponseEntity<User> updateCurrentUser(
+            @Valid @RequestBody UpdateUserDTO dto) {
+
+        return ResponseEntity.ok(
+                userservice.updateCurrentUser(dto)
+        );
     }
+
     @PatchMapping("/admin/customers/{custId}/activate")
     public ResponseEntity<User> activateCustomer(@PathVariable("custId") int custId){
         User customer = userservice.activateCustomer(custId);

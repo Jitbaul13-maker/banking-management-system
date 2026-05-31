@@ -1,5 +1,6 @@
 package com.baul.banking_backend.services;
 
+import com.baul.banking_backend.exception.ResourceNotfoundException;
 import com.baul.banking_backend.models.User;
 import com.baul.banking_backend.repos.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User customer = repo.getCustomerByCustName(username);
+        User customer = repo.findByCustName(username)
+                .orElseThrow(() -> new ResourceNotfoundException("User not found"));
 
         return new MyUserPrinciple(customer);
     }
