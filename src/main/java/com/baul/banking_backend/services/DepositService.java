@@ -24,15 +24,7 @@ public class DepositService {
         this.detailsRepo = detailsRepo;
         this.customerRepo = customerRepo;
     }
-
-    public void deleteDeposit(int custId, int depositId) {
-        DepositDetails deposit = detailsRepo
-                .findByDepositIdAndCustomerCustId(depositId, custId)
-                .orElseThrow(() -> new ResourceNotfoundException("Deposit not found"));
-
-        detailsRepo.delete(deposit);
-    }
-
+    
     public int getUserId(){
         MyUserPrinciple user = (MyUserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return user.getUserId();
@@ -68,5 +60,19 @@ public class DepositService {
         depositDetails.setActive(true);
 
         return detailsRepo.save(depositDetails);
+    }
+
+    public void activateDeposit(int custId, int depositId) {
+        DepositDetails deposit = detailsRepo.findByDepositIdAndCustomerCustId(depositId, custId)
+                .orElseThrow(() -> new ResourceNotfoundException("No valid deposit found!"));
+
+        deposit.setActive(true);
+    }
+
+    public void deactivateDeposit(int custId, int depositId) {
+        DepositDetails deposit = detailsRepo.findByDepositIdAndCustomerCustId(depositId, custId)
+                .orElseThrow(() -> new ResourceNotfoundException("No valid deposit found!"));
+
+        deposit.setActive(true);
     }
 }

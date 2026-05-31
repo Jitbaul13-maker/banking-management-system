@@ -26,10 +26,17 @@ public class DepositController {
         return ResponseEntity.ok(depositDetails);
     }
 
-    @DeleteMapping("/admin/customers/{custId}/deposits/{depositId}")
-    public ResponseEntity<?> deleteDeposit(@PathVariable("custId") int custId,
+    @PatchMapping("/admin/customers/{custId}/deposits/{depositId}/activate")
+    public ResponseEntity<?> activateDeposit(@PathVariable("custId") int custId,
                                            @PathVariable("depositId") int depositId){
-        service.deleteDeposit(custId, depositId);
+        service.activateDeposit(custId, depositId);
+        return ResponseEntity.ok("Deposit deleted successfully");
+    }
+
+    @PatchMapping("/admin/customers/{custId}/deposits/{depositId}/activate")
+    public ResponseEntity<?> deactivateDeposit(@PathVariable("custId") int custId,
+                                             @PathVariable("depositId") int depositId){
+        service.deactivateDeposit(custId, depositId);
         return ResponseEntity.ok("Deposit deleted successfully");
     }
 
