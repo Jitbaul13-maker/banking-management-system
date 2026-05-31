@@ -1,6 +1,6 @@
 # Banking Management System
 
-A RESTful Banking Management System built with Spring Boot, Spring Security, JWT Authentication, JPA/Hibernate, and MySQL.
+A RESTful Banking Management System built with Spring Boot, Spring Security, JWT Authentication, JPA/Hibernate, and PostgreSQL.
 
 The project simulates core banking operations such as customer management, account handling, transactions, card management, and fixed deposits while following a layered architecture with DTOs, validation, exception handling, and JWT-based authentication.
 
