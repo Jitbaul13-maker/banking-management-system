@@ -33,7 +33,7 @@ public class DepositController {
         return ResponseEntity.ok("Deposit deleted successfully");
     }
 
-    @PatchMapping("/admin/customers/{custId}/deposits/{depositId}/activate")
+    @PatchMapping("/admin/customers/{custId}/deposits/{depositId}/deactivate")
     public ResponseEntity<?> deactivateDeposit(@PathVariable("custId") int custId,
                                              @PathVariable("depositId") int depositId){
         service.deactivateDeposit(custId, depositId);

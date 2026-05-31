@@ -24,7 +24,7 @@ public class DepositService {
         this.detailsRepo = detailsRepo;
         this.customerRepo = customerRepo;
     }
-    
+
     public int getUserId(){
         MyUserPrinciple user = (MyUserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return user.getUserId();

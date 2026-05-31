@@ -14,7 +14,7 @@ public interface AccountDetailsRepo extends JpaRepository<AccountDetails, Intege
 
     Optional<AccountDetails> findByAccountIdAndCustomerCustId(int accountId, int custId);
 
-    Optional<AccountDetails> findByUserCustNameAndAccountId(String userName, int accountId);
+    Optional<AccountDetails> findByCustomerCustNameAndAccountId(String userName, int accountId);
 
-    Optional<AccountDetails> findByUserCustIdAndAccountId(int userId, int accountId);
+    Optional<AccountDetails> findByCustomerCustIdAndAccountId(int userId, int accountId);
 }

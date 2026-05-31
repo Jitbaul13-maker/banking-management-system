@@ -41,7 +41,7 @@ public class TransactionService {
         User user = customerRepo.findById(userId).orElseThrow(()->new ResourceNotfoundException("Account Not found"));
 
         AccountDetails account = accountDetailsRepo
-                .findByUserCustIdAndAccountId(userId, accountId)
+                .findByCustomerCustIdAndAccountId(userId, accountId)
                 .orElseThrow(() -> new ResourceNotfoundException("No valid account found"));
 
         if (!account.getActive() || !user.getActive()){
@@ -59,7 +59,7 @@ public class TransactionService {
         User user = customerRepo.findById(userId).orElseThrow(()->new ResourceNotfoundException("Account Not found"));
 
         AccountDetails account = accountDetailsRepo
-                .findByUserCustIdAndAccountId(userId, accountId)
+                .findByCustomerCustIdAndAccountId(userId, accountId)
                 .orElseThrow(() -> new ResourceNotfoundException("No valid account found"));
 
         if (!account.getActive() || !user.getActive()){
